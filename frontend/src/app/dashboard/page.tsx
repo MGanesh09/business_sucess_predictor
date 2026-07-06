@@ -7,6 +7,7 @@ import {
   TrendingUp, PlusCircle, FileText, MapPin, 
   CheckCircle, ShieldAlert, DollarSign, Calendar
 } from 'lucide-react';
+import { getCurrencySetting, formatAmount, CurrencyType } from '../../lib/currency';
 import { 
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, 
   Tooltip, PieChart, Pie, Cell, CartesianGrid 
@@ -18,6 +19,14 @@ export default function DashboardPage() {
   const [predictions, setPredictions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
+  const [currency, setCurrency] = useState<CurrencyType>('USD');
+
+  useEffect(() => {
+    setCurrency(getCurrencySetting());
+    const handleCurrencyChange = () => setCurrency(getCurrencySetting());
+    window.addEventListener('currencyChange', handleCurrencyChange);
+    return () => window.removeEventListener('currencyChange', handleCurrencyChange);
+  }, []);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -131,7 +140,7 @@ export default function DashboardPage() {
         <div className="glass-panel p-6 rounded-2xl border-white/5 flex items-center justify-between">
           <div>
             <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Avg. Projected Profit</span>
-            <h3 className="text-2xl font-extrabold text-white mt-1.5">${avgProfit.toLocaleString()}/yr</h3>
+            <h3 className="text-2xl font-extrabold text-white mt-1.5">{formatAmount(avgProfit, currency)}/yr</h3>
           </div>
           <div className="p-3 bg-amber-500/10 text-amber-400 rounded-xl">
             <DollarSign className="h-5 w-5" />
@@ -167,8 +176,15 @@ export default function DashboardPage() {
                     <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" />
                     <XAxis dataKey="name" stroke="#9ca3af" />
                     <YAxis yAxisId="left" orientation="left" stroke="#6366f1" label={{ value: 'Success Score (%)', angle: -90, position: 'insideLeft', fill: '#6366f1' }} />
-                    <YAxis yAxisId="right" orientation="right" stroke="#a855f7" label={{ value: 'Budget ($K)', angle: 90, position: 'insideRight', fill: '#a855f7' }} />
-                    <Tooltip contentStyle={{ backgroundColor: '#111827', borderColor: 'rgba(255,255,255,0.08)', color: '#fff' }} />
+                    <YAxis yAxisId="right" orientation="right" stroke="#a855f7" label={{ value: `Budget (${currency === 'INR' ? '₹' : '$'}K)`, angle: 90, position: 'insideRight', fill: '#a855f7' }} />
+                    <Tooltip 
+                      formatter={(value, name) => {
+                        if (name === 'budget') return [currency === 'INR' ? `₹${(Number(value) * 83).toLocaleString()}K` : `$${value}K`, 'Budget'];
+                        if (name === 'success') return [`${value}%`, 'Success Rating'];
+                        return [value, name];
+                      }}
+                      contentStyle={{ backgroundColor: '#111827', borderColor: 'rgba(255,255,255,0.08)', color: '#fff' }} 
+                    />
                     <Bar yAxisId="left" dataKey="success" fill="#6366f1" radius={[4, 4, 0, 0]} />
                     <Bar yAxisId="right" dataKey="budget" fill="#a855f7" radius={[4, 4, 0, 0]} />
                   </BarChart>

@@ -16,6 +16,7 @@ import {
 } from 'recharts';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { getCurrencySetting, formatAmount, CurrencyType } from '../../../../lib/currency';
 
 // Dynamically load Map selector (read-only view)
 const MapSelector = dynamic(() => import('../../../../components/MapSelector'), { ssr: false });
@@ -30,6 +31,14 @@ export default function ReportDetailPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('summary');
   const [downloading, setDownloading] = useState(false);
+  const [currency, setCurrency] = useState<CurrencyType>('USD');
+
+  useEffect(() => {
+    setCurrency(getCurrencySetting());
+    const handleCurrencyChange = () => setCurrency(getCurrencySetting());
+    window.addEventListener('currencyChange', handleCurrencyChange);
+    return () => window.removeEventListener('currencyChange', handleCurrencyChange);
+  }, []);
 
   useEffect(() => {
     const fetchReport = async () => {
@@ -374,19 +383,19 @@ export default function ReportDetailPage() {
               <div className="space-y-4">
                 <div className="flex justify-between border-b border-white/5 pb-2">
                   <span className="text-xs text-gray-400">Monthly Revenue:</span>
-                  <span className="text-sm font-bold text-white">${report.revenuePrediction.monthly.toLocaleString()}</span>
+                  <span className="text-sm font-bold text-white">{formatAmount(report.revenuePrediction.monthly, currency)}</span>
                 </div>
                 <div className="flex justify-between border-b border-white/5 pb-2">
                   <span className="text-xs text-gray-400">Monthly Profit:</span>
-                  <span className="text-sm font-bold text-emerald-400">${report.revenuePrediction.monthlyProfit.toLocaleString()}</span>
+                  <span className="text-sm font-bold text-emerald-400">{formatAmount(report.revenuePrediction.monthlyProfit, currency)}</span>
                 </div>
                 <div className="flex justify-between border-b border-white/5 pb-2">
                   <span className="text-xs text-gray-400">Yearly Revenue:</span>
-                  <span className="text-sm font-bold text-white">${report.revenuePrediction.yearly.toLocaleString()}</span>
+                  <span className="text-sm font-bold text-white">{formatAmount(report.revenuePrediction.yearly, currency)}</span>
                 </div>
                 <div className="flex justify-between border-b border-white/5 pb-2">
                   <span className="text-xs text-gray-400">Yearly Profit:</span>
-                  <span className="text-sm font-bold text-emerald-400">${report.revenuePrediction.yearlyProfit.toLocaleString()}</span>
+                  <span className="text-sm font-bold text-emerald-400">{formatAmount(report.revenuePrediction.yearlyProfit, currency)}</span>
                 </div>
                 <div className="flex justify-between border-b border-white/5 pb-2">
                   <span className="text-xs text-gray-400">Estimated ROI:</span>

@@ -8,6 +8,7 @@ import {
   Building2, MapPin, DollarSign, Users, Info, 
   Target, Sparkles, ChevronRight, HelpCircle
 } from 'lucide-react';
+import { getCurrencySetting, CurrencyType } from '../../../lib/currency';
 
 // Dynamically load the Leaflet MapSelector with SSR disabled to prevent node reference errors
 const MapSelector = dynamic(() => import('../../../components/MapSelector'), {
@@ -51,6 +52,11 @@ export default function NewPredictionPage() {
   const [expectedDailyCustomers, setExpectedDailyCustomers] = useState('50');
   const [description, setDescription] = useState('');
   const [goals, setGoals] = useState('');
+  const [currency, setCurrency] = useState<CurrencyType>('USD');
+
+  useEffect(() => {
+    setCurrency(getCurrencySetting());
+  }, []);
   
   // Location State
   const [lat, setLat] = useState(37.7749);
@@ -90,14 +96,15 @@ export default function NewPredictionPage() {
     setLoading(true);
     setStageIndex(0);
 
+    const conversionFactor = currency === 'INR' ? 83 : 1;
     const payload = {
       businessName,
       category,
-      budget: Number(budget),
+      budget: Number(budget) / conversionFactor,
       shopArea: Number(shopArea),
-      rent: Number(rent),
+      rent: Number(rent) / conversionFactor,
       employeesCount: Number(employeesCount),
-      expectedProductPrice: Number(expectedProductPrice),
+      expectedProductPrice: Number(expectedProductPrice) / conversionFactor,
       expectedDailyCustomers: Number(expectedDailyCustomers),
       description,
       goals,
@@ -199,17 +206,21 @@ export default function NewPredictionPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div>
-                <label className="block text-xs font-semibold text-gray-400 mb-1.5 uppercase">Budget / Investment ($) *</label>
+                <label className="block text-xs font-semibold text-gray-400 mb-1.5 uppercase">Budget / Investment ({currency === 'INR' ? '₹' : '$'}) *</label>
                 <div className="relative">
                   <input
                     type="number"
                     required
                     value={budget}
                     onChange={e => setBudget(e.target.value)}
-                    placeholder="100000"
+                    placeholder={currency === 'INR' ? "8300000" : "100000"}
                     className="w-full glass-input text-sm pl-10 font-mono"
                   />
-                  <DollarSign className="absolute left-3 top-3.5 h-4 w-4 text-gray-500" />
+                  {currency === 'INR' ? (
+                    <span className="absolute left-3.5 top-3.5 text-xs font-extrabold text-gray-500">₹</span>
+                  ) : (
+                    <DollarSign className="absolute left-3 top-3.5 h-4 w-4 text-gray-500" />
+                  )}
                 </div>
               </div>
 
@@ -228,17 +239,21 @@ export default function NewPredictionPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-400 mb-1.5 uppercase">Monthly Rent ($) *</label>
+                <label className="block text-xs font-semibold text-gray-400 mb-1.5 uppercase">Monthly Rent ({currency === 'INR' ? '₹' : '$'}) *</label>
                 <div className="relative">
                   <input
                     type="number"
                     required
                     value={rent}
                     onChange={e => setRent(e.target.value)}
-                    placeholder="2500"
+                    placeholder={currency === 'INR' ? "200000" : "2500"}
                     className="w-full glass-input text-sm pl-10 font-mono"
                   />
-                  <DollarSign className="absolute left-3 top-3.5 h-4 w-4 text-gray-500" />
+                  {currency === 'INR' ? (
+                    <span className="absolute left-3.5 top-3.5 text-xs font-extrabold text-gray-500">₹</span>
+                  ) : (
+                    <DollarSign className="absolute left-3 top-3.5 h-4 w-4 text-gray-500" />
+                  )}
                 </div>
               </div>
             </div>
@@ -259,16 +274,20 @@ export default function NewPredictionPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-400 mb-1.5 uppercase">Product Avg Price ($)</label>
+                <label className="block text-xs font-semibold text-gray-400 mb-1.5 uppercase">Product Avg Price ({currency === 'INR' ? '₹' : '$'})</label>
                 <div className="relative">
                   <input
                     type="number"
                     value={expectedProductPrice}
                     onChange={e => setExpectedProductPrice(e.target.value)}
-                    placeholder="10"
+                    placeholder={currency === 'INR' ? "800" : "10"}
                     className="w-full glass-input text-sm pl-10 font-mono"
                   />
-                  <DollarSign className="absolute left-3 top-3.5 h-4 w-4 text-gray-500" />
+                  {currency === 'INR' ? (
+                    <span className="absolute left-3.5 top-3.5 text-xs font-extrabold text-gray-500">₹</span>
+                  ) : (
+                    <DollarSign className="absolute left-3 top-3.5 h-4 w-4 text-gray-500" />
+                  )}
                 </div>
               </div>
 

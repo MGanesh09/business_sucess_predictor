@@ -8,6 +8,8 @@ import {
   MessageSquare, BarChart3, Settings, ShieldAlert, LogOut, Menu, X 
 } from 'lucide-react';
 
+import { getCurrencySetting, setCurrencySetting, CurrencyType } from '../../lib/currency';
+
 interface SidebarItem {
   name: string;
   href: string;
@@ -19,6 +21,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [user, setUser] = useState<any>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [currency, setCurrency] = useState<CurrencyType>('USD');
   const pathname = usePathname();
   const router = useRouter();
 
@@ -39,8 +42,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       return;
     }
     
+    setCurrency(getCurrencySetting());
     setLoading(false);
   }, [router]);
+
+  const toggleCurrency = () => {
+    const next = currency === 'USD' ? 'INR' : 'USD';
+    setCurrency(next);
+    setCurrencySetting(next);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -110,6 +120,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         {/* Profile Card & Logout */}
         <div className="p-4 border-t border-white/5 flex flex-col gap-3">
+          {/* Currency Toggle Button */}
+          <div className="px-2 flex items-center justify-between border-b border-white/5 pb-3 mb-1">
+            <span className="text-xs text-gray-500 font-semibold uppercase">Currency</span>
+            <button
+              onClick={toggleCurrency}
+              className="glass-panel px-2.5 py-1 rounded-lg text-xs font-bold text-indigo-400 border border-indigo-500/20 hover:bg-indigo-500/10 transition-colors flex items-center gap-1 cursor-pointer"
+            >
+              {currency === 'USD' ? '🇺🇸 USD ($)' : '🇮🇳 INR (₹)'}
+            </button>
+          </div>
+
           <div className="flex items-center gap-3 px-2 py-1.5">
             <img 
               src={user?.profilePicture || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200'} 
@@ -182,6 +203,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </nav>
 
             <div className="p-4 border-t border-white/5 flex flex-col gap-3">
+              {/* Currency Toggle Button */}
+              <div className="px-2 flex items-center justify-between border-b border-white/5 pb-3 mb-1">
+                <span className="text-xs text-gray-500 font-semibold uppercase">Currency</span>
+                <button
+                  onClick={toggleCurrency}
+                  className="glass-panel px-2.5 py-1 rounded-lg text-xs font-bold text-indigo-400 border border-indigo-500/20 hover:bg-indigo-500/10 transition-colors flex items-center gap-1"
+                >
+                  {currency === 'USD' ? '🇺🇸 USD ($)' : '🇮🇳 INR (₹)'}
+                </button>
+              </div>
+
               <div className="flex items-center gap-3 px-2 py-1.5">
                 <img 
                   src={user?.profilePicture} 

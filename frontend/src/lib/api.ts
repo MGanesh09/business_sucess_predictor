@@ -15,17 +15,28 @@ export const getHeaders = () => {
   return headers;
 };
 
+const handleResponse = async (response: Response) => {
+  if (!response.ok) {
+    if (response.status === 401) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/auth/login';
+      }
+    }
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.message || 'Something went wrong');
+  }
+  return response.json();
+};
+
 export const api = {
   async get(endpoint: string) {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       method: 'GET',
       headers: getHeaders(),
     });
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err.message || 'Something went wrong');
-    }
-    return response.json();
+    return handleResponse(response);
   },
 
   async post(endpoint: string, data: any) {
@@ -34,11 +45,7 @@ export const api = {
       headers: getHeaders(),
       body: JSON.stringify(data),
     });
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err.message || 'Something went wrong');
-    }
-    return response.json();
+    return handleResponse(response);
   },
 
   async delete(endpoint: string) {
@@ -46,10 +53,6 @@ export const api = {
       method: 'DELETE',
       headers: getHeaders(),
     });
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err.message || 'Something went wrong');
-    }
-    return response.json();
+    return handleResponse(response);
   },
 };

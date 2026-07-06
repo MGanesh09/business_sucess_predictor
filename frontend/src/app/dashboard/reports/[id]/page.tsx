@@ -52,6 +52,35 @@ export default function ReportDetailPage() {
     const element = document.getElementById('report-pdf-content');
     if (!element) return;
     
+    // Save original getComputedStyle
+    const originalGetComputedStyle = window.getComputedStyle;
+    
+    // Apply monkey-patch to sanitize Tailwind v4 oklch/oklab colors
+    window.getComputedStyle = function(elt, pseudoElt) {
+      const style = originalGetComputedStyle(elt, pseudoElt);
+      return new Proxy(style, {
+        get(target, prop) {
+          if (prop === 'getPropertyValue') {
+            return (name: string) => {
+              const val = target.getPropertyValue(name);
+              if (typeof val === 'string' && (val.includes('oklch') || val.includes('oklab'))) {
+                return val.replace(/oklch\([^)]+\)/g, 'rgb(99, 102, 241)').replace(/oklab\([^)]+\)/g, 'rgb(99, 102, 241)');
+              }
+              return val;
+            };
+          }
+          const val = target[prop as any];
+          if (typeof val === 'string' && (val.includes('oklch') || val.includes('oklab'))) {
+            return val.replace(/oklch\([^)]+\)/g, 'rgb(99, 102, 241)').replace(/oklab\([^)]+\)/g, 'rgb(99, 102, 241)');
+          }
+          if (typeof val === 'function') {
+            return val.bind(target);
+          }
+          return val;
+        }
+      });
+    };
+
     try {
       const canvas = await html2canvas(element, { scale: 2, useCORS: true });
       const imgData = canvas.toDataURL('image/png');
@@ -76,6 +105,8 @@ export default function ReportDetailPage() {
       console.error(e);
       alert('Error generating PDF: ' + (e instanceof Error ? e.message : String(e)));
     } finally {
+      // Restore original getComputedStyle
+      window.getComputedStyle = originalGetComputedStyle;
       setDownloading(false);
     }
   };

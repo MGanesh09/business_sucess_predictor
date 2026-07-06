@@ -1,0 +1,16 @@
+{
+  "name": "business-success-predictor-ai",
+  "version": "1.0.0",
+  "description": "Business Success Predictor AI - A complete startup web application",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:ml": "cd ml_service && python app.py",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:ml\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

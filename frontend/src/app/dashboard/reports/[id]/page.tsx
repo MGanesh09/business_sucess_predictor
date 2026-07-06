@@ -63,15 +63,15 @@ export default function ReportDetailPage() {
           if (prop === 'getPropertyValue') {
             return (name: string) => {
               const val = target.getPropertyValue(name);
-              if (typeof val === 'string' && (val.includes('oklch') || val.includes('oklab'))) {
-                return val.replace(/oklch\([^)]+\)/g, 'rgb(99, 102, 241)').replace(/oklab\([^)]+\)/g, 'rgb(99, 102, 241)');
+              if (typeof val === 'string' && (val.includes('oklch') || val.includes('oklab') || val.includes('lch') || val.includes('lab'))) {
+                return val.replace(/(oklch|oklab|lch|lab)\([^)]+\)/g, 'rgb(99, 102, 241)');
               }
               return val;
             };
           }
           const val = target[prop as any];
-          if (typeof val === 'string' && (val.includes('oklch') || val.includes('oklab'))) {
-            return val.replace(/oklch\([^)]+\)/g, 'rgb(99, 102, 241)').replace(/oklab\([^)]+\)/g, 'rgb(99, 102, 241)');
+          if (typeof val === 'string' && (val.includes('oklch') || val.includes('oklab') || val.includes('lch') || val.includes('lab'))) {
+            return val.replace(/(oklch|oklab|lch|lab)\([^)]+\)/g, 'rgb(99, 102, 241)');
           }
           if (typeof val === 'function') {
             return val.bind(target);

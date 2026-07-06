@@ -74,7 +74,7 @@ export default function ReportDetailPage() {
       pdf.save(`Success_Predictor_Report_${report.businessName.replace(/\s+/g, '_')}.pdf`);
     } catch (e) {
       console.error(e);
-      alert('Error generating PDF report.');
+      alert('Error generating PDF: ' + (e instanceof Error ? e.message : String(e)));
     } finally {
       setDownloading(false);
     }

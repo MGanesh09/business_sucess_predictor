@@ -83,7 +83,7 @@ export default function ReportDetailPage() {
             return val.replace(/(oklch|oklab|lch|lab)\([^)]+\)/g, 'rgb(99, 102, 241)');
           }
           if (typeof val === 'function') {
-            return val.bind(target);
+            return (val as any).bind(target);
           }
           return val;
         }

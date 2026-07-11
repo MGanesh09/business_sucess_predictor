@@ -64,6 +64,23 @@ const MockDb = {
     }
     return null;
   },
+  save: (collection, item) => {
+    const data = readData(collection);
+    const index = data.findIndex(x => x.id === item.id || x._id === item._id);
+    if (index !== -1) {
+      data[index] = { ...data[index], ...item };
+      writeData(collection, data);
+      return data[index];
+    }
+    const newItem = {
+      _id: item._id || Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+      createdAt: item.createdAt || new Date().toISOString(),
+      ...item
+    };
+    data.push(newItem);
+    writeData(collection, data);
+    return newItem;
+  },
   delete: (collection, id) => {
     const data = readData(collection);
     const filtered = data.filter(item => item.id !== id && item._id !== id);

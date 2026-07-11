@@ -17,7 +17,7 @@ const wrapPrediction = (pred) => {
       if (isDbConnected()) {
         if (typeof this.save === 'function') return this.save();
       }
-      return MockDb.update('predictions', this._id, this);
+      return MockDb.save('predictions', this);
     }
   };
 };

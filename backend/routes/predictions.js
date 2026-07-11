@@ -2,8 +2,63 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const auth = require('../middleware/auth');
-const Prediction = require('../models/Prediction');
-const Log = require('../models/Log');
+const mongoosePrediction = require('../models/Prediction');
+const mongooseLog = require('../models/Log');
+const mongoose = require('mongoose');
+const MockDb = require('../models/mockDb');
+
+const isDbConnected = () => mongoose.connection.readyState === 1;
+
+const wrapPrediction = (pred) => {
+  if (!pred) return null;
+  return {
+    ...pred,
+    save: async function () {
+      if (isDbConnected()) {
+        if (typeof this.save === 'function') return this.save();
+      }
+      return MockDb.update('predictions', this._id, this);
+    }
+  };
+};
+
+function Prediction(data) {
+  if (isDbConnected()) {
+    return new mongoosePrediction(data);
+  }
+  const instance = {
+    _id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+    createdAt: new Date(),
+    ...data
+  };
+  return wrapPrediction(instance);
+}
+
+Prediction.find = async (query) => {
+  if (isDbConnected()) return mongoosePrediction.find(query).sort({ createdAt: -1 });
+  const raw = MockDb.find('predictions', query);
+  // Sort by createdAt descending
+  raw.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  return raw.map(wrapPrediction);
+};
+
+Prediction.findById = async (id) => {
+  if (isDbConnected()) return mongoosePrediction.findById(id);
+  const raw = MockDb.findById('predictions', id);
+  return wrapPrediction(raw);
+};
+
+Prediction.findByIdAndDelete = async (id) => {
+  if (isDbConnected()) return mongoosePrediction.findByIdAndDelete(id);
+  return MockDb.delete('predictions', id);
+};
+
+const Log = {
+  create: async (data) => {
+    if (isDbConnected()) return mongooseLog.create(data);
+    return MockDb.create('logs', data);
+  }
+};
 
 // Helper to generate mock/fallback prediction data if the ML service is offline
 const generateFallbackPrediction = (data) => {

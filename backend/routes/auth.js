@@ -1,8 +1,64 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const Log = require('../models/Log');
+const mongooseUser = require('../models/User');
+const mongooseLog = require('../models/Log');
+const mongoose = require('mongoose');
+const MockDb = require('../models/mockDb');
+const bcrypt = require('bcryptjs');
+
+const isDbConnected = () => mongoose.connection.readyState === 1;
+
+const wrapUser = (user) => {
+  if (!user) return null;
+  return {
+    ...user,
+    comparePassword: async function (enteredPassword) {
+      return bcrypt.compare(enteredPassword, this.password);
+    },
+    save: async function () {
+      if (isDbConnected()) {
+        if (typeof this.save === 'function') return this.save();
+      }
+      if (this.password && !this.password.startsWith('$2a$') && !this.password.startsWith('$2b$')) {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+      }
+      return MockDb.update('users', this._id, this);
+    }
+  };
+};
+
+function User(data) {
+  if (isDbConnected()) {
+    return new mongooseUser(data);
+  }
+  const instance = {
+    _id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+    createdAt: new Date(),
+    ...data
+  };
+  return wrapUser(instance);
+}
+
+User.findOne = async (query) => {
+  if (isDbConnected()) return mongooseUser.findOne(query);
+  const raw = MockDb.findOne('users', query);
+  return wrapUser(raw);
+};
+
+User.findById = async (id) => {
+  if (isDbConnected()) return mongooseUser.findById(id);
+  const raw = MockDb.findById('users', id);
+  return wrapUser(raw);
+};
+
+const Log = {
+  create: async (data) => {
+    if (isDbConnected()) return mongooseLog.create(data);
+    return MockDb.create('logs', data);
+  }
+};
 
 // Generate JWT Token
 const generateToken = (user) => {

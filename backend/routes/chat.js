@@ -1,8 +1,65 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
-const Chat = require('../models/Chat');
-const Prediction = require('../models/Prediction');
+const mongooseChat = require('../models/Chat');
+const mongoosePrediction = require('../models/Prediction');
+const mongoose = require('mongoose');
+const MockDb = require('../models/mockDb');
+
+const isDbConnected = () => mongoose.connection.readyState === 1;
+
+const wrapChat = (chat) => {
+  if (!chat) return null;
+  return {
+    ...chat,
+    save: async function () {
+      if (isDbConnected()) {
+        if (typeof this.save === 'function') return this.save();
+      }
+      return MockDb.update('chats', this._id, this);
+    }
+  };
+};
+
+const wrapPrediction = (pred) => {
+  if (!pred) return null;
+  return {
+    ...pred,
+    save: async function () {
+      if (isDbConnected()) {
+        if (typeof this.save === 'function') return this.save();
+      }
+      return MockDb.update('predictions', this._id, this);
+    }
+  };
+};
+
+function Chat(data) {
+  if (isDbConnected()) {
+    return new mongooseChat(data);
+  }
+  const instance = {
+    _id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+    createdAt: new Date(),
+    ...data
+  };
+  return wrapChat(instance);
+}
+
+Chat.find = async (query) => {
+  if (isDbConnected()) return mongooseChat.find(query).sort({ createdAt: 1 });
+  const raw = MockDb.find('chats', query);
+  raw.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  return raw.map(wrapChat);
+};
+
+const Prediction = {
+  findById: async (id) => {
+    if (isDbConnected()) return mongoosePrediction.findById(id);
+    const raw = MockDb.findById('predictions', id);
+    return wrapPrediction(raw);
+  }
+};
 
 // Helper to generate dynamic, contextual chatbot responses based on prediction details
 const generateAIResponse = (question, prediction) => {

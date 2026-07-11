@@ -67,7 +67,7 @@ export default function LoginPage() {
         {/* Brand logo header */}
         <div className="flex flex-col items-center mb-8">
           <Link href="/" className="flex items-center gap-2 mb-2">
-            <div className="p-2.5 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-xl">
+            <div className="p-2.5 bg-gradient-to-tr from-red-500 to-indigo-600 rounded-xl">
               <TrendingUp className="h-5 w-5 text-white" />
             </div>
             <span className="text-xl font-bold tracking-tight text-white">Predictor AI</span>

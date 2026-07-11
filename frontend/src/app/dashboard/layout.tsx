@@ -91,7 +91,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <aside className="hidden lg:flex lg:flex-col w-64 glass-panel border-r border-white/5 bg-opacity-20 shrink-0">
         <div className="h-16 flex items-center px-6 border-b border-white/5">
           <Link href="/" className="flex items-center gap-2">
-            <div className="p-2 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-lg">
+            <div className="p-2 bg-gradient-to-tr from-red-500 to-indigo-600 rounded-lg">
               <TrendingUp className="h-5 w-5 text-white" />
             </div>
             <span className="font-bold tracking-tight text-white">Predictor AI</span>
@@ -107,7 +107,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 href={item.href}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                   isActive 
-                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20' 
+                    ? 'bg-gradient-to-r from-red-600/90 to-indigo-600/90 text-white shadow-md shadow-red-950/40' 
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -171,7 +171,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <aside className="relative flex flex-col w-64 glass-panel border-r border-white/5 bg-[#030712] h-full">
             <div className="h-16 flex items-center justify-between px-6 border-b border-white/5">
               <Link href="/" className="flex items-center gap-2">
-                <div className="p-2 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-lg">
+                <div className="p-2 bg-gradient-to-tr from-red-500 to-indigo-600 rounded-lg">
                   <TrendingUp className="h-5 w-5 text-white" />
                 </div>
                 <span className="font-bold text-white">Predictor AI</span>
@@ -191,7 +191,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     onClick={() => setMobileOpen(false)}
                     className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                       isActive 
-                        ? 'bg-indigo-600 text-white' 
+                        ? 'bg-gradient-to-r from-red-600/90 to-indigo-600/90 text-white shadow-md shadow-red-950/40' 
                         : 'text-gray-400 hover:text-white hover:bg-white/5'
                     }`}
                   >

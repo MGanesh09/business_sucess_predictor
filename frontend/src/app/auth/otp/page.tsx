@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/navigation';
+import Link from 'next/link';
 import { api } from '../../../lib/api';
 import { TrendingUp, KeyRound, AlertCircle, ArrowRight } from 'lucide-react';
 
@@ -45,7 +45,7 @@ function OTPVerificationForm() {
   return (
     <div className="max-w-md w-full glass-panel p-8 rounded-2xl border-white/5 shadow-xl flex flex-col">
       <div className="flex flex-col items-center mb-8">
-        <div className="p-2.5 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-xl mb-4">
+        <div className="p-2.5 bg-gradient-to-tr from-red-500 to-indigo-600 rounded-xl mb-4">
           <TrendingUp className="h-6 w-6 text-white" />
         </div>
         <h2 className="text-xl font-bold tracking-tight text-white mb-2">Verify Your Account</h2>

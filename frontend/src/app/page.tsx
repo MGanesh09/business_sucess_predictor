@@ -51,8 +51,8 @@ export default function LandingPage() {
       <Navbar />
 
       {/* Decorative Orbs */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl -z-20 pointer-events-none" />
-      <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-3xl -z-20 pointer-events-none" />
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-red-500/10 rounded-full blur-3xl -z-20 pointer-events-none" />
+      <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-3xl -z-20 pointer-events-none" />
 
       {/* HERO SECTION */}
       <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
@@ -60,9 +60,9 @@ export default function LandingPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border-indigo-500/20 text-indigo-300 text-xs font-semibold mb-6 shadow-md"
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border-red-500/20 text-red-300 text-xs font-semibold mb-6 shadow-md"
         >
-          <Sparkles className="h-4 w-4 text-purple-400 animate-pulse" />
+          <Sparkles className="h-4 w-4 text-red-400 animate-pulse" />
           Next-Gen Geomarketing Machine Learning
         </motion.div>
 
@@ -73,7 +73,7 @@ export default function LandingPage() {
           className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.1] max-w-4xl text-white"
         >
           Know If Your Business Will Succeed <br />
-          <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-red-500 via-red-400 to-indigo-500 bg-clip-text text-transparent">
             Before You Sign the Lease
           </span>
         </motion.h1>
@@ -98,7 +98,7 @@ export default function LandingPage() {
             <ArrowRight className="h-5 w-5" />
           </Link>
           <Link href="#demo" className="glass-button-secondary text-base flex items-center justify-center gap-2 py-3 px-8">
-            <Play className="h-4 w-4 text-indigo-400 fill-indigo-400" />
+            <Play className="h-4 w-4 text-red-400 fill-red-400" />
             Watch Video Demo
           </Link>
         </motion.div>
@@ -117,7 +117,7 @@ export default function LandingPage() {
             <span className="mt-2 text-xs font-semibold text-gray-400 tracking-wider uppercase">Predictions Simulated</span>
           </div>
           <div className="glass-panel py-8 px-6 rounded-2xl border-white/5 flex flex-col items-center">
-            <span className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-emerald-400 to-indigo-400 bg-clip-text text-transparent tracking-tight">
+            <span className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-red-400 to-indigo-400 bg-clip-text text-transparent tracking-tight">
               {stats.accuracy}%
             </span>
             <span className="mt-2 text-xs font-semibold text-gray-400 tracking-wider uppercase">ML Model Accuracy</span>
@@ -298,8 +298,8 @@ export default function LandingPage() {
           </div>
 
           {/* Growth Plan */}
-          <div className="glass-panel p-8 rounded-2xl flex flex-col justify-between border-indigo-500/30 relative text-left">
-            <div className="absolute top-0 right-6 -translate-y-1/2 bg-indigo-600 text-white text-xs font-semibold py-1 px-3 rounded-full">
+          <div className="glass-panel p-8 rounded-2xl flex flex-col justify-between border-red-500/30 relative text-left">
+            <div className="absolute top-0 right-6 -translate-y-1/2 bg-red-600 text-white text-xs font-semibold py-1 px-3 rounded-full">
               Most Popular
             </div>
             <div>
@@ -310,11 +310,11 @@ export default function LandingPage() {
                 <span className="text-sm font-semibold text-gray-400 ml-1">/ month</span>
               </div>
               <ul className="mt-8 space-y-4">
-                <li className="flex items-center gap-2.5 text-sm text-gray-300"><Check className="h-4 w-4 text-indigo-400" /> 25 Predictions / month</li>
-                <li className="flex items-center gap-2.5 text-sm text-gray-300"><Check className="h-4 w-4 text-indigo-400" /> Demographics & Foot Traffic</li>
-                <li className="flex items-center gap-2.5 text-sm text-gray-300"><Check className="h-4 w-4 text-indigo-400" /> Competitor 热力图 (Density Map)</li>
-                <li className="flex items-center gap-2.5 text-sm text-gray-300"><Check className="h-4 w-4 text-indigo-400" /> Premium Downloadable PDFs</li>
-                <li className="flex items-center gap-2.5 text-sm text-gray-300"><Check className="h-4 w-4 text-indigo-400" /> Conversational AI Assistant</li>
+                <li className="flex items-center gap-2.5 text-sm text-gray-300"><Check className="h-4 w-4 text-red-400" /> 25 Predictions / month</li>
+                <li className="flex items-center gap-2.5 text-sm text-gray-300"><Check className="h-4 w-4 text-red-400" /> Demographics & Foot Traffic</li>
+                <li className="flex items-center gap-2.5 text-sm text-gray-300"><Check className="h-4 w-4 text-red-400" /> Competitor 热力图 (Density Map)</li>
+                <li className="flex items-center gap-2.5 text-sm text-gray-300"><Check className="h-4 w-4 text-red-400" /> Premium Downloadable PDFs</li>
+                <li className="flex items-center gap-2.5 text-sm text-gray-300"><Check className="h-4 w-4 text-red-400" /> Conversational AI Assistant</li>
               </ul>
             </div>
             <Link href="/auth/signup" className="glass-button-primary text-center text-sm py-2.5 mt-8 w-full">

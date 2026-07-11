@@ -13,7 +13,7 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="p-2 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-lg">
+              <div className="p-2 bg-gradient-to-tr from-red-500 to-indigo-600 rounded-lg">
                 <TrendingUp className="h-5 w-5 text-white" />
               </div>
               <span className="text-lg font-bold tracking-tight text-white">

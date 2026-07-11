@@ -142,7 +142,7 @@ export default function NewPredictionPage() {
 
           <div className="w-full bg-gray-900 h-1.5 rounded-full overflow-hidden mb-6 border border-white/5">
             <div 
-              className="bg-gradient-to-r from-indigo-500 to-purple-500 h-full rounded-full transition-all duration-1000"
+              className="bg-gradient-to-r from-red-500 to-indigo-600 h-full rounded-full transition-all duration-1000"
               style={{ width: `${((stageIndex + 1) / STAGES.length) * 100}%` }}
             />
           </div>

@@ -17,6 +17,23 @@ export default function SignupPage() {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    if (!name.trim()) {
+      setError('Please enter your full name.');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long.');
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -38,7 +55,7 @@ export default function SignupPage() {
         
         <div className="flex flex-col items-center mb-8">
           <Link href="/" className="flex items-center gap-2 mb-2">
-            <div className="p-2.5 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-xl">
+            <div className="p-2.5 bg-gradient-to-tr from-red-500 to-indigo-600 rounded-xl">
               <TrendingUp className="h-5 w-5 text-white" />
             </div>
             <span className="text-xl font-bold tracking-tight text-white">Predictor AI</span>

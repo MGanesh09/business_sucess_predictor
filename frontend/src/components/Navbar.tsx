@@ -57,10 +57,10 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="p-2.5 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-xl shadow-md group-hover:scale-105 transition-transform duration-300">
+              <div className="p-2.5 bg-gradient-to-tr from-red-500 to-indigo-600 rounded-xl shadow-md group-hover:scale-105 transition-transform duration-300">
                 <TrendingUp className="h-6 w-6 text-white" />
               </div>
-              <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-indigo-200 to-indigo-400 bg-clip-text text-transparent">
+              <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-red-100 to-indigo-300 bg-clip-text text-transparent">
                 Predictor AI
               </span>
             </Link>

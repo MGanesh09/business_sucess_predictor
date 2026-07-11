@@ -53,7 +53,7 @@ const seedAdmin = async () => {
 
 // Database Connection
 mongoose
-  .connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/business_success_predictor')
+  .connect(process.env.MONGO_URI || process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/business_success_predictor')
   .then(async () => {
     console.log('MongoDB Connected Successfully.');
     await seedAdmin();

@@ -192,15 +192,15 @@ export default function ReportDetailPage() {
             <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest font-mono">Location analysis report</span>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">{report.businessName}</h1>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-gray-400">
-              <span className="flex items-center gap-1"><MapPin className="h-4 w-4 text-indigo-400" /> {report.location.address}</span>
-              <span className="bg-white/5 px-2.5 py-0.5 rounded text-xs text-indigo-300 font-medium">{report.category}</span>
+              <span className="flex items-center gap-1"><MapPin className="h-4 w-4 text-red-400" /> {report.location.address}</span>
+              <span className="bg-white/5 px-2.5 py-0.5 rounded text-xs text-red-300 font-medium">{report.category}</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 shrink-0 bg-indigo-950/20 border border-indigo-500/10 p-4 rounded-2xl">
+          <div className="flex items-center gap-4 shrink-0 bg-red-950/20 border border-red-500/10 p-4 rounded-2xl">
             <div className="relative flex justify-center items-center">
-              <div className="w-16 h-16 rounded-full border-4 border-indigo-500/10 border-t-indigo-500 animate-pulse absolute" />
-              <span className="text-2xl font-black text-indigo-300">{report.successPrediction.probability}%</span>
+              <div className="w-16 h-16 rounded-full border-4 border-red-500/10 border-t-red-500 animate-pulse absolute" />
+              <span className="text-2xl font-black text-red-300">{report.successPrediction.probability}%</span>
             </div>
             <div>
               <span className="block text-[10px] uppercase font-bold tracking-wider text-gray-400">Success Probability</span>
